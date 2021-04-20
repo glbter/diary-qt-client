@@ -8,7 +8,7 @@
 #include <QCalendarWidget>
 #include <QListWidget>
 #include <QPushButton>
-#include "inotescontroller.h"
+#include "iclient.h"
 
 
 class MainWindow : public QMainWindow
@@ -16,14 +16,14 @@ class MainWindow : public QMainWindow
     Q_OBJECT
 
 public:
-    MainWindow(INotesController& notesController, QWidget *parent = nullptr);
+    MainWindow(IClient& notesController, QWidget *parent = nullptr);
     ~MainWindow();
 private slots:
     void handleButton();
     void refreshList();
     void resfreshNoteTextField();
     void saveFile();
-    void openLogin(INotesController& controller);
+    void openLogin(IClient& controller);
 private:
     QTextEdit *inputFieldNoteText;
     QLineEdit *inputFieldNoteTitle;
@@ -36,7 +36,7 @@ private:
     QPushButton *okButton;
     QPushButton *loadFileBtn;
 
-    INotesController *notesController;
+    IClient *notesController;
     vector<Note> listNotes;
 };
 #endif // MAINWINDOW_H

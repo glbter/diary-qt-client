@@ -9,15 +9,15 @@ CONFIG += c++11
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    client.cpp \
     loginwindow.cpp \
     main.cpp \
     mainwindow.cpp \
-    note.cpp \
-    notescontroller.cpp
+    note.cpp
 
 HEADERS += \
-    inotescontroller.h \
-    notescontroller.h \
+    client.h \
+    iclient.h \
     mainwindow.h \
     loginwindow.h \
     note.h

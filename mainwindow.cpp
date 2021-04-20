@@ -12,7 +12,7 @@
 #include <QWidget>
 
 
-MainWindow::MainWindow(INotesController& controller, QWidget *parent)
+MainWindow::MainWindow(IClient& controller, QWidget *parent)
 : QMainWindow(parent)
 {
     setWindowTitle("Super-puper schodennyk");
@@ -59,6 +59,7 @@ MainWindow::MainWindow(INotesController& controller, QWidget *parent)
     loadFileBtn->setGeometry(paddingX, textLine + 50, 100, 35);
     connect(loadFileBtn, SIGNAL(released()), this, SLOT(saveFile()));
 
+//    this->setVisible(true);
     openLogin(controller);
     refreshList();
 }
@@ -124,9 +125,17 @@ void MainWindow::saveFile()
 }
 
 
-void MainWindow::openLogin(INotesController& controller){
+void MainWindow::openLogin(IClient& controller){
     LoginWindow* window = new LoginWindow(this, controller);
-    window->show();
+    //window->show();
+    int res = window->exec();
+    if(res == QDialog::Rejected){
+        setWindowTitle("pasasi");
+    }
+    //if(controller.isLogined() == false){
+    //    setWindowTitle("pasasi");
+    //}
+    //close();
    // hide();
 }
 
@@ -139,7 +148,6 @@ MainWindow::~MainWindow()
     delete outputField;
     delete uiNotes;
 //    delete notesController;
-
     delete okButton;
     delete loadFileBtn;
 }

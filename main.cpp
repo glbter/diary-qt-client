@@ -1,6 +1,6 @@
 #include "loginwindow.h"
 #include "mainwindow.h"
-#include "notescontroller.h"
+#include "client.h"
 
 #include <QLabel>
 #include <QApplication>
@@ -8,7 +8,7 @@
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
-    INotesController* notesController = new NotesController();
+    IClient* notesController = new Client();
     MainWindow* mw = new MainWindow(*notesController);
     mw->show();
     return a.exec();

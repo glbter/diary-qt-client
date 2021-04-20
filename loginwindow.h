@@ -5,7 +5,7 @@
 #include <QDialog>
 #include <QLineEdit>
 #include <QTextEdit>
-#include "inotescontroller.h"
+#include "iclient.h"
 
 
 class LoginWindow : public QDialog
@@ -21,9 +21,9 @@ private:
 
     QPushButton *okButton;
 
-    INotesController *controller;
+    IClient *controller;
 public:
-    LoginWindow(QWidget *parent, INotesController& controller);
+    LoginWindow(QWidget *parent, IClient& controller);
     ~LoginWindow();
 };
 

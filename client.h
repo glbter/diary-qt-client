@@ -1,20 +1,26 @@
 #pragma once
-#ifndef NOTESCONTROLLER_H
-#define NOTESCONTROLLER_H
+#ifndef CLIENT_H
+#define CLIENT_H
 #include "mainwindow.h"
-#include "inotescontroller.h"
+#include "iclient.h"
+using namespace std;
 
-class NotesController: public INotesController
+class Client: public IClient
 {
 public:
-    NotesController();
+    Client();
     Note& AddNote(const string& title, const  string& text);
     Note GetNote(const int& id) ;
     vector<Note> GetAllNotes();
 
     bool Login(const string& login, const string& password);
+    bool isLogined();
+
 private:
     MainWindow *view;
+    bool logined = false;
+    string username;
+    string password;
 };
 
-#endif // NOTESCONTROLLER_H
+#endif // CLIENT_H
