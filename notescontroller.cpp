@@ -19,3 +19,7 @@ vector<Note> NotesController::GetAllNotes()
 {
     return vector<Note>();//noteDAO->GetAllNotes();
 }
+
+bool NotesController::Login(const string &login, const string &password){
+    return true;
+}
