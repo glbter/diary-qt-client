@@ -124,8 +124,8 @@ void MainWindow::saveFile()
 }
 
 
-void MainWindow::openWidget(){
-    LoginWindow* window = new LoginWindow(this);
+void MainWindow::openLogin(INotesController& controller){
+    LoginWindow* window = new LoginWindow(this, controller);
     window->show();
    // hide();
 }

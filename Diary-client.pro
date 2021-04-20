@@ -17,10 +17,11 @@ SOURCES += \
 
 HEADERS += \
     inotescontroller.h \
-    loginwindow.h \
+    notescontroller.h \
     mainwindow.h \
-    note.h \
-    notescontroller.h
+    loginwindow.h \
+    note.h
+
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

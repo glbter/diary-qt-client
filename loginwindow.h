@@ -5,6 +5,8 @@
 #include <QDialog>
 #include <QLineEdit>
 #include <QTextEdit>
+#include "inotescontroller.h"
+
 
 class LoginWindow : public QDialog
 {
@@ -17,10 +19,12 @@ private:
     QLineEdit *inputPasswordText;
     QLineEdit *inputPassword;
 
+    QPushButton *okButton;
 
+    INotesController *controller;
 public:
-    LoginWindow(QWidget *parent);
-    virtual ~LoginWindow() {}
+    LoginWindow(QWidget *parent, INotesController& controller);
+    ~LoginWindow();
 };
 
 #endif // LOGINWINDOW_H
