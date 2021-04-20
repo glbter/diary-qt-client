@@ -12,12 +12,14 @@ SOURCES += \
     client.cpp \
     loginwindow.cpp \
     main.cpp \
+    mainwidget.cpp \
     mainwindow.cpp \
     note.cpp
 
 HEADERS += \
     client.h \
     iclient.h \
+    mainwidget.h \
     mainwindow.h \
     loginwindow.h \
     note.h

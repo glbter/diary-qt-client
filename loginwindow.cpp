@@ -11,10 +11,11 @@
 #include <QWindow>
 #include <QDialog>
 #include "iclient.h"
+#include "mainwidget.h"
 
 
 
-LoginWindow::LoginWindow(QWidget *parent, IClient& controller) : QDialog(parent)
+LoginWindow::LoginWindow(QMainWindow *parent, IClient& controller) : QWidget(parent)
 {
     setWindowTitle("Login");
     setGeometry(100, 100, 400, 500);
@@ -22,6 +23,7 @@ LoginWindow::LoginWindow(QWidget *parent, IClient& controller) : QDialog(parent)
     int paddingX = 10;
     int paddingY = 10;
 
+    this->parent = parent;
     this->controller = &controller;
 
     inputLoginText = new QLineEdit("Username", this);
@@ -47,8 +49,15 @@ void LoginWindow::loginCommand(){
     std::string login = inputLogin->text().toUtf8().constData();
     std::string password = inputPassword->text().toUtf8().constData();
     if(controller->Login(login, password)){
-        this->accept();
-        //close();
+        //this->accept();
+        MainWidget* widget = new MainWidget(*controller, this);
+        widget->show();
+        //MainWindow::setCentralWidget(loginWidget);
+        parent->setCentralWidget(widget);
+        close();
+    } else {
+        close();
+        parent->close();
     }
 }
 

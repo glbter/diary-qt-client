@@ -19,24 +19,10 @@ public:
     MainWindow(IClient& notesController, QWidget *parent = nullptr);
     ~MainWindow();
 private slots:
-    void handleButton();
-    void refreshList();
-    void resfreshNoteTextField();
-    void saveFile();
     void openLogin(IClient& controller);
 private:
-    QTextEdit *inputFieldNoteText;
-    QLineEdit *inputFieldNoteTitle;
-    QLineEdit *titleLb;
-    QLineEdit *textLb;
-    QTextEdit *outputField;
-
-    QListWidget *uiNotes;
-
-    QPushButton *okButton;
-    QPushButton *loadFileBtn;
 
     IClient *notesController;
-    vector<Note> listNotes;
+
 };
 #endif // MAINWINDOW_H
