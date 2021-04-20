@@ -7,7 +7,9 @@
 #include <QTextEdit>
 #include <QCalendarWidget>
 #include <QListWidget>
+#include <QPushButton>
 #include "inotescontroller.h"
+
 
 class MainWindow : public QMainWindow
 {
@@ -21,15 +23,19 @@ private slots:
     void refreshList();
     void resfreshNoteTextField();
     void saveFile();
-    void openWidget();
+    void openLogin(INotesController& controller);
 private:
     QTextEdit *inputFieldNoteText;
     QLineEdit *inputFieldNoteTitle;
     QLineEdit *titleLb;
     QLineEdit *textLb;
     QTextEdit *outputField;
-    QCalendarWidget *calendar;
+
     QListWidget *uiNotes;
+
+    QPushButton *okButton;
+    QPushButton *loadFileBtn;
+
     INotesController *notesController;
     vector<Note> listNotes;
 };

@@ -11,7 +11,8 @@
 #include <loginwindow.h>
 #include <QWidget>
 
-MainWindow::MainWindow(INotesController& notesController, QWidget *parent)
+
+MainWindow::MainWindow(INotesController& controller, QWidget *parent)
 : QMainWindow(parent)
 {
     setWindowTitle("Super-puper schodennyk");
@@ -20,7 +21,7 @@ MainWindow::MainWindow(INotesController& notesController, QWidget *parent)
 
     int paddingX = 10;
     int paddingY = 10;
-    this->notesController = &notesController;
+    this->notesController = &controller;
     uiNotes = new QListWidget(this);
     uiNotes->addItem(QString("Here will be shown list of writings"));
     uiNotes->setGeometry(paddingX, paddingY, 380, 100);
@@ -50,19 +51,15 @@ MainWindow::MainWindow(INotesController& notesController, QWidget *parent)
     inputFieldNoteText = new QTextEdit(this);
     inputFieldNoteText->setGeometry(paddingX + 50, textLine, 240, 40);
 
-    QPushButton *okButton = new QPushButton("Add", this);
+    okButton = new QPushButton("Add", this);
     okButton->setGeometry(paddingX + 300, textLine, 40, 20);
     connect(okButton, SIGNAL(released()), this, SLOT(handleButton()));
 
-    QPushButton *loadFileBtn = new QPushButton("Load file", this);
+    loadFileBtn = new QPushButton("Load file", this);
     loadFileBtn->setGeometry(paddingX, textLine + 50, 100, 35);
     connect(loadFileBtn, SIGNAL(released()), this, SLOT(saveFile()));
 
-    QPushButton *openLogin = new QPushButton("Llogin", this);
-    openLogin->setGeometry(paddingX, textLine + 90, 60, 35);
-    connect(openLogin, SIGNAL(released()), this, SLOT(openWidget()));
-
-    openWidget();
+    openLogin(controller);
     refreshList();
 }
 
@@ -81,7 +78,6 @@ void MainWindow::refreshList() {
     listNotes.clear();
     std::vector<Note> notesList = notesController->GetAllNotes();
     QStringList listItems = QStringList ();
-   // std::vector<Note>::iterator iter = notesList.begin();
     for(Note note: notesList) {
         listNotes.push_back(note);
         listItems << QString::fromStdString(note.getTitle());
@@ -93,14 +89,6 @@ void MainWindow::refreshList() {
 void MainWindow::resfreshNoteTextField() {
     int index = uiNotes->currentRow();
     Note& note = listNotes.at(index);
-//    QMessageBox *msgBox = new QMessageBox(this);
-//       msgBox->setText(QString::fromStdString(to_string(note.getId()) + " "+note.getTitle() + " "+ note.getText()));
-//       msgBox->setWindowModality(Qt::NonModal);
-//       msgBox->setInformativeText("Do you want to save your changes?");
-//       msgBox->setStandardButtons(QMessageBox::Ok);
-//       msgBox->setDefaultButton(QMessageBox::Ok);
-//       int ret = msgBox->exec();
-//    Note note = notesController->GetNote(index);
     outputField->setText(QString::fromStdString(note.getText()));
 }
 
@@ -144,4 +132,14 @@ void MainWindow::openWidget(){
 
 MainWindow::~MainWindow()
 {
+    delete inputFieldNoteText;
+    delete inputFieldNoteTitle;
+    delete titleLb;
+    delete textLb;
+    delete outputField;
+    delete uiNotes;
+//    delete notesController;
+
+    delete okButton;
+    delete loadFileBtn;
 }
