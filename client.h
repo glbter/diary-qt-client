@@ -43,12 +43,15 @@ private slots:
 signals:
     void connected();
     void loggedIn();
+    void loginFail();
     void loginError(const QString &reason);
     void disconnected();
     void messageReceived(const QString &sender, const QString &text);
     void error(QAbstractSocket::SocketError socketError);
-    void userJoined(const QString &username);
-    void userLeft(const QString &username);
+
+    void noteGetted(const Note& note);
+    void noteAdded(const int noteId);
+    void allNotesReceived(vector<Note> notes);
 private:
     QTcpSocket *m_clientSocket;
     bool m_loggedIn;
@@ -58,8 +61,11 @@ private:
     QString PASSWORD = QStringLiteral("Password");
     QString ACTION = QStringLiteral("Action");
     QString DATA = QStringLiteral("Data");
+
     QString LOGIN_ACTION = QStringLiteral("Login");
     QString ADD_NOTE_ACTION = QStringLiteral("AddNote");
+    QString GET_ALL_NOTES_ACTION = QStringLiteral("GetAllUserNotes");
+    QString GET_NOTE_ACTION = QStringLiteral("GetNotes");
 };
 
 #endif // CLIENT_H
