@@ -9,6 +9,7 @@
 #include <QListWidget>
 #include <QPushButton>
 #include "iclient.h"
+#include "client.h"
 
 
 class MainWindow : public QMainWindow
@@ -16,7 +17,7 @@ class MainWindow : public QMainWindow
     Q_OBJECT
 
 public:
-    MainWindow(IClient& notesController, QWidget *parent = nullptr);
+    MainWindow(Client& notesController, QWidget *parent = nullptr);
     ~MainWindow();
 private slots:
     void openLogin(IClient& controller);

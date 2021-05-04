@@ -6,7 +6,7 @@
 #include <QObject>
 #include <QTcpSocket>
 #include <QHostAddress>
-//class QHostAddress;
+
 class QJsonDocument;
 using namespace std;
 
@@ -53,6 +53,13 @@ private:
     QTcpSocket *m_clientSocket;
     bool m_loggedIn;
     void jsonReceived(const QJsonObject &doc);
+
+    QString LOGIN = QStringLiteral("Login");
+    QString PASSWORD = QStringLiteral("Password");
+    QString ACTION = QStringLiteral("Action");
+    QString DATA = QStringLiteral("Data");
+    QString LOGIN_ACTION = QStringLiteral("Login");
+    QString ADD_NOTE_ACTION = QStringLiteral("AddNote");
 };
 
 #endif // CLIENT_H

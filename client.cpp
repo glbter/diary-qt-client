@@ -36,13 +36,14 @@ Note &Client::AddNote(const string &title, const string &text)
     clientStream.setVersion(QDataStream::Qt_5_7);
     // Create the JSON we want to send
     QJsonObject message;
-    message[QStringLiteral("type")] = QStringLiteral("message");
-    message[QStringLiteral("request")] = QString::fromStdString("addNote");
+    message[ACTION] = ADD_NOTE_ACTION;
+    message[DATA] = "";
+
     message[QStringLiteral("title")] = QString::fromStdString(title);
     message[QStringLiteral("text")] = QString::fromStdString(text);
 
-    message[QStringLiteral("username")] = QString::fromStdString(username);
-    message[QStringLiteral("passwork")] = QString::fromStdString(password);
+    message[LOGIN] = QString::fromStdString(username);
+    message[PASSWORD] = QString::fromStdString(password);
     // send the JSON using QDataStream
     clientStream << QJsonDocument(message).toJson();
 
@@ -62,11 +63,11 @@ vector<Note> Client::GetAllNotes()
     clientStream.setVersion(QDataStream::Qt_5_7);
     // Create the JSON we want to send
     QJsonObject message;
-    message[QStringLiteral("type")] = QStringLiteral("message");
-    message[QStringLiteral("request")] = QString::fromStdString("getAll");
 
-    message[QStringLiteral("username")] = QString::fromStdString(username);
-    message[QStringLiteral("passwork")] = QString::fromStdString(password);
+    message[ACTION] = QString::fromStdString("getAll");
+    message[DATA] = "";
+    message[LOGIN] = QString::fromStdString(username);
+    message[PASSWORD] = QString::fromStdString(password);
     // send the JSON using QDataStream
     clientStream << QJsonDocument(message).toJson();
 
@@ -84,10 +85,10 @@ bool Client::Login(const string &login, const string &password){
         clientStream.setVersion(QDataStream::Qt_5_7);
         // Create the JSON we want to send
         QJsonObject message;
-        message[QStringLiteral("type")] = QStringLiteral("login");
-        message[QStringLiteral("request")] = QString::fromStdString("login");
-        message[QStringLiteral("username")] = QString::fromStdString(username);
-        message[QStringLiteral("password")] = QString::fromStdString(password);
+        message[ACTION] = QString::fromStdString("getAll");
+        message[DATA] = "";
+        message[LOGIN] = QString::fromStdString(username);
+        message[PASSWORD] = QString::fromStdString(password);
         // send the JSON using QDataStream
         clientStream << QJsonDocument(message).toJson(QJsonDocument::Compact);
     }
@@ -98,6 +99,7 @@ bool Client::Login(const string &login, const string &password){
 
 
 int Client::CorrectLoginAndPassword(const string &login, const string &password){
+    Login(login, password);
     return 1;
 }
 
@@ -105,11 +107,6 @@ bool Client::isLogined()
 {
     return logined;
 }
-
-
-
-
-
 
 
 //void Client::login(const QString &userName)
@@ -127,20 +124,6 @@ bool Client::isLogined()
 //        clientStream << QJsonDocument(message).toJson(QJsonDocument::Compact);
 //    }
 //}
-
-void Client::sendMessage(const QString &text)
-{
-    // create a QDataStream operating on the socket
-    QDataStream clientStream(m_clientSocket);
-    // set the version so that programs compiled with different versions of Qt can agree on how to serialise
-    clientStream.setVersion(QDataStream::Qt_5_7);
-    // Create the JSON we want to send
-    QJsonObject message;
-    message[QStringLiteral("type")] = QStringLiteral("message");
-    message[QStringLiteral("text")] = text;
-    // send the JSON using QDataStream
-    clientStream << QJsonDocument(message).toJson();
-}
 
 void Client::disconnectFromHost()
 {
@@ -170,38 +153,38 @@ void Client::jsonReceived(const QJsonObject &docObj)
         // and notify it via the loginError signal
         const QJsonValue reasonVal = docObj.value(QLatin1String("reason"));
         emit loginError(reasonVal.toString());
-    } else if (typeVal.toString().compare(QLatin1String("message"), Qt::CaseInsensitive) == 0) { //It's a chat message
-        // we extract the text field containing the chat text
-        const QJsonValue textVal = docObj.value(QLatin1String("text"));
-        // we extract the sender field containing the username of the sender
-        const QJsonValue senderVal = docObj.value(QLatin1String("sender"));
-        if (textVal.isNull() || !textVal.isString())
-            return; // the text field was invalid so we ignore
-        if (senderVal.isNull() || !senderVal.isString())
-            return; // the sender field was invalid so we ignore
-        // we notify a new message was received via the messageReceived signal
-        emit messageReceived(senderVal.toString(), textVal.toString());
-    } else if (typeVal.toString().compare(QLatin1String("newuser"), Qt::CaseInsensitive) == 0) { // A user joined the chat
-        // we extract the username of the new user
-        const QJsonValue usernameVal = docObj.value(QLatin1String("username"));
-        if (usernameVal.isNull() || !usernameVal.isString())
-            return; // the username was invalid so we ignore
-        // we notify of the new user via the userJoined signal
-        emit userJoined(usernameVal.toString());
-    } else if (typeVal.toString().compare(QLatin1String("userdisconnected"), Qt::CaseInsensitive) == 0) { // A user left the chat
-         // we extract the username of the new user
-        const QJsonValue usernameVal = docObj.value(QLatin1String("username"));
-        if (usernameVal.isNull() || !usernameVal.isString())
-            return; // the username was invalid so we ignore
-        // we notify of the user disconnection the userLeft signal
-        emit userLeft(usernameVal.toString());
-    }
+//    } else if (typeVal.toString().compare(QLatin1String("message"), Qt::CaseInsensitive) == 0) { //It's a chat message
+//        // we extract the text field containing the chat text
+//        const QJsonValue textVal = docObj.value(QLatin1String("text"));
+//        // we extract the sender field containing the username of the sender
+//        const QJsonValue senderVal = docObj.value(QLatin1String("sender"));
+//        if (textVal.isNull() || !textVal.isString())
+//            return; // the text field was invalid so we ignore
+//        if (senderVal.isNull() || !senderVal.isString())
+//            return; // the sender field was invalid so we ignore
+//        // we notify a new message was received via the messageReceived signal
+//        emit messageReceived(senderVal.toString(), textVal.toString());
+//    } else if (typeVal.toString().compare(QLatin1String("newuser"), Qt::CaseInsensitive) == 0) { // A user joined the chat
+//        // we extract the username of the new user
+//        const QJsonValue usernameVal = docObj.value(QLatin1String("username"));
+//        if (usernameVal.isNull() || !usernameVal.isString())
+//            return; // the username was invalid so we ignore
+//        // we notify of the new user via the userJoined signal
+//        emit userJoined(usernameVal.toString());
+//    } else if (typeVal.toString().compare(QLatin1String("userdisconnected"), Qt::CaseInsensitive) == 0) { // A user left the chat
+//         // we extract the username of the new user
+//        const QJsonValue usernameVal = docObj.value(QLatin1String("username"));
+//        if (usernameVal.isNull() || !usernameVal.isString())
+//            return; // the username was invalid so we ignore
+//        // we notify of the user disconnection the userLeft signal
+//        emit userLeft(usernameVal.toString());
+//    }
 }
 
 //void Client::connectToServer(const QHostAddress &address, quint16 port)
 //{
 
-//}
+}
 
 void Client::onReadyRead()
 {

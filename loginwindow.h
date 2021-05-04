@@ -6,6 +6,7 @@
 #include <QLineEdit>
 #include <QTextEdit>
 #include "iclient.h"
+#include "client.h"
 #include <QMainWindow>
 
 
@@ -14,6 +15,8 @@ class LoginWindow : public QWidget
     Q_OBJECT
 private slots:
     void loginCommand();
+    void loginSuccess();
+    void loginFailed();
 private:
     QLineEdit *inputLoginText;
     QLineEdit *inputLogin;
@@ -26,7 +29,7 @@ private:
 
     QMainWindow *parent;
 public:
-    LoginWindow(QMainWindow *parent, IClient& controller);
+    LoginWindow(QMainWindow *parent, Client& controller);
     ~LoginWindow();
 };
 

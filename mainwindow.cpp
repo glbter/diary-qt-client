@@ -12,7 +12,7 @@
 #include <QWidget>
 #include "mainwidget.h"
 
-MainWindow::MainWindow(IClient& controller, QWidget *parent)
+MainWindow::MainWindow(Client& controller, QWidget *parent)
 : QMainWindow(parent)
 {
     setWindowTitle("Super-puper schodennyk");
