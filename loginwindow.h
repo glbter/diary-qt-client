@@ -25,7 +25,7 @@ private:
 
     QPushButton *okButton;
 
-    IClient *controller;
+    Client *controller;
 
     QMainWindow *parent;
 public:

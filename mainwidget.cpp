@@ -12,7 +12,7 @@
 #include <QWidget>
 
 
-MainWidget::MainWidget(IClient& controller, QWidget *parent) : QWidget(parent)
+MainWidget::MainWidget(Client& controller, QWidget *parent) : QWidget(parent)
 {
     int paddingX = 10;
     int paddingY = 10;
@@ -54,8 +54,12 @@ MainWidget::MainWidget(IClient& controller, QWidget *parent) : QWidget(parent)
     loadFileBtn->setGeometry(paddingX, textLine + 50, 100, 35);
     connect(loadFileBtn, SIGNAL(released()), this, SLOT(saveFile()));
 
+    connect(&controller, SIGNAL(allNotesReceived()), this, SLOT(refreshList()));
+    //connect(&controller, SIGNAL(noteGetted()), this, SLOT());
+    connect(&controller, SIGNAL(noteAdded), this, SLOT(addedNote()));
+
 //    this->setVisible(true);
-    refreshList();
+    controller.GetAllNotes();
 }
 
 void MainWidget::handleButton() {
@@ -65,13 +69,13 @@ void MainWidget::handleButton() {
                 inputFieldNoteText->toPlainText().toUtf8().constData());
     inputFieldNoteTitle->clear();
     inputFieldNoteText->clear();
-    refreshList();
+
 }
 
-void MainWidget::refreshList() {
+void MainWidget::refreshList(vector<Note> notesList) {
     uiNotes->clear();
     listNotes.clear();
-    std::vector<Note> notesList = notesController->GetAllNotes();
+
     QStringList listItems = QStringList ();
     for(Note note: notesList) {
         listNotes.push_back(note);
@@ -111,12 +115,21 @@ void MainWidget::saveFile()
         header = header.erase(stop);
         header = header.substr(start, stop);
 
+        lastAddedNote.setText(text);
+        lastAddedNote.setTitle(header);
         notesController->AddNote(header, text);
         file.close();
-
-        refreshList();
     }
 }
+
+
+void MainWidget::addedNote(int id){
+   lastAddedNote.setId(id);
+   listNotes.push_back(lastAddedNote);
+   uiNotes->addItem(QString::fromStdString(lastAddedNote.getTitle()));
+}
+
+
 
 MainWidget::~MainWidget()
 {
