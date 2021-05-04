@@ -96,6 +96,11 @@ bool Client::Login(const string &login, const string &password){
     return true;
 }
 
+
+int Client::CorrectLoginAndPassword(const string &login, const string &password){
+    return 1;
+}
+
 bool Client::isLogined()
 {
     return logined;

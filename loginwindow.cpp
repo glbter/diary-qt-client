@@ -48,16 +48,18 @@ LoginWindow::LoginWindow(QMainWindow *parent, IClient& controller) : QWidget(par
 void LoginWindow::loginCommand(){
     std::string login = inputLogin->text().toUtf8().constData();
     std::string password = inputPassword->text().toUtf8().constData();
-    if(controller->Login(login, password)){
-        //this->accept();
+    if(controller->CorrectLoginAndPassword(login, password)){
         MainWidget* widget = new MainWidget(*controller, this);
         widget->show();
-        //MainWindow::setCentralWidget(loginWidget);
         parent->setCentralWidget(widget);
         close();
     } else {
-        close();
-        parent->close();
+        QMessageBox *msgBox = new QMessageBox(this);
+            msgBox->setWindowModality(Qt::NonModal);
+            msgBox->setInformativeText("Наступного разу точно вийде :) ");
+            msgBox->setStandardButtons(QMessageBox::Ok);
+            msgBox->setDefaultButton(QMessageBox::Ok);
+            msgBox->show();
     }
 }
 

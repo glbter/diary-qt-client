@@ -21,6 +21,7 @@ public:
     vector<Note> GetAllNotes();
 
     bool Login(const string& login, const string& password);
+    int CorrectLoginAndPassword(const string& login, const string& password);
     bool isLogined();
 
 private:
