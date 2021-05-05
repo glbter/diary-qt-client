@@ -15,16 +15,16 @@ class MainWidget : public QWidget
     Q_OBJECT
 
 public:
-    MainWidget(Client& notesController, QWidget *parent = nullptr);
+    MainWidget(Client &notesController, QWidget *parent = nullptr);
     ~MainWidget();
 private slots:
     void handleButton();
     void refreshList(vector<Note> notes);
     void resfreshNoteTextField();
     void saveFile();
-    void AddNote(int id);
+    void addedNote(int id);
 private:
-    Note note;
+    Note lastAddedNote;
     QTextEdit *inputFieldNoteText;
     QLineEdit *inputFieldNoteTitle;
     QLineEdit *titleLb;

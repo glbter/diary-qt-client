@@ -12,7 +12,7 @@
 #include <QWidget>
 
 
-MainWidget::MainWidget(Client& controller, QWidget *parent) : QWidget(parent)
+MainWidget::MainWidget(Client &controller, QWidget *parent) : QWidget(parent)
 {
     int paddingX = 10;
     int paddingY = 10;

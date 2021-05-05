@@ -16,13 +16,13 @@ class MainWindow : public QMainWindow
     Q_OBJECT
 
 public:
-    MainWindow(Client& notesController, QWidget *parent = nullptr);
+    MainWindow(Client &myclient, QWidget *parent = nullptr);
     ~MainWindow();
 private slots:
-    void openLogin(IClient& controller);
+    void openLogin(Client &controller);
 private:
 
-    IClient *notesController;
+    Client *notesController;
 
 };
 
