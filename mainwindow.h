@@ -8,7 +8,6 @@
 #include <QCalendarWidget>
 #include <QListWidget>
 #include <QPushButton>
-#include "iclient.h"
 #include "client.h"
 
 
@@ -26,4 +25,6 @@ private:
     IClient *notesController;
 
 };
+
+
 #endif // MAINWINDOW_H

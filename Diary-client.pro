@@ -19,7 +19,6 @@ SOURCES += \
 
 HEADERS += \
     client.h \
-    iclient.h \
     mainwidget.h \
     mainwindow.h \
     loginwindow.h \

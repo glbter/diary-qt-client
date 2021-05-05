@@ -10,7 +10,6 @@
 #include <QMessageBox>
 #include <QWindow>
 #include <QDialog>
-#include "iclient.h"
 #include "mainwidget.h"
 #include "client.h"
 

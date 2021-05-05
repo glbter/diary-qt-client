@@ -5,7 +5,6 @@
 #include <QDialog>
 #include <QLineEdit>
 #include <QTextEdit>
-#include "iclient.h"
 #include "client.h"
 #include <QMainWindow>
 

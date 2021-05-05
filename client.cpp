@@ -127,22 +127,6 @@ bool Client::isLogined()
 }
 
 
-//void Client::login(const QString &userName)
-//{
-//    if (m_clientSocket->state() == QAbstractSocket::ConnectedState) { // if the client is connected
-//        // create a QDataStream operating on the socket
-//        QDataStream clientStream(m_clientSocket);
-//        // set the version so that programs compiled with different versions of Qt can agree on how to serialise
-//        clientStream.setVersion(QDataStream::Qt_5_7);
-//        // Create the JSON we want to send
-//        QJsonObject message;
-//        message[QStringLiteral("type")] = QStringLiteral("login");
-//        message[QStringLiteral("username")] = userName;
-//        // send the JSON using QDataStream
-//        clientStream << QJsonDocument(message).toJson(QJsonDocument::Compact);
-//    }
-//}
-
 void Client::disconnectFromHost()
 {
     m_clientSocket->disconnectFromHost();
@@ -191,7 +175,7 @@ void Client::jsonReceived(const QJsonObject &docObj)
     return;
 }
 
-}
+
 
 void Client::onReadyRead()
 {
