@@ -25,7 +25,7 @@ Client::Client(QObject *parent)     : QObject(parent)
         //QHostAddress *address;
         //address->setAddress(QStringLiteral("127.0.0.1"));
         //m_clientSocket->connectToHost(address, 5555);
-        m_clientSocket->connectToHost("127.0.0.1", 5555);
+        m_clientSocket->connectToHost("127.0.0.1", 5353);
 }
 
 Note &Client::AddNote(const string &title, const string &text)
@@ -109,10 +109,11 @@ bool Client::Login(const string &login, const string &password){
         message[PASSWORD] = QString::fromStdString(password);
         // send the JSON using QDataStream
         clientStream << QJsonDocument(message).toJson(QJsonDocument::Compact);
+        logined = true;
+        return true;
     }
 
-    logined = true;
-    return true;
+    return false;
 }
 
 
@@ -139,7 +140,7 @@ void Client::jsonReceived(const QJsonObject &docObj)
     if (typeVal.isNull() || !typeVal.isString())
         return; // a message with no type was received so we just ignore it
 
-    if (typeVal.toString().compare(LOGIN_ACTION)) { //It's a login message
+    if (typeVal.toString().compare(LOGIN_ACTION) == 0) { //It's a login message
         if (m_loggedIn)
             return; // if we are already logged in we ignore
 
@@ -151,13 +152,13 @@ void Client::jsonReceived(const QJsonObject &docObj)
         }
         emit loginFail();
 
-    } else if (typeVal.toString().compare(GET_ALL_NOTES_ACTION)) {
+    } else if (typeVal.toString().compare(GET_ALL_NOTES_ACTION) == 0) {
         return;
-    } else if (typeVal.toString().compare(ADD_NOTE_ACTION)) {
+    } else if (typeVal.toString().compare(ADD_NOTE_ACTION) == 0) {
         const int noteId = docObj.value(QLatin1String("NoteId")).toInt();
         emit noteAdded(noteId);
         return;
-    } else if (typeVal.toString().compare(GET_NOTE_ACTION)) {
+    } else if (typeVal.toString().compare(GET_NOTE_ACTION) == 0) {
         const int id = docObj.value(QLatin1String("NoteId")).toInt();
         const string text = docObj.value(QLatin1String("Text")).toString().toStdString();
         const string title = docObj.value(QLatin1String("Text")).toString().toStdString();
@@ -171,7 +172,7 @@ void Client::jsonReceived(const QJsonObject &docObj)
     // the login attempt failed, we extract the reason of the failure from the JSON
     // and notify it via the loginError signal
     const QJsonValue reasonVal = docObj.value(QLatin1String("reason"));
-    emit loginError(reasonVal.toString());
+    emit loginError();
     return;
 }
 

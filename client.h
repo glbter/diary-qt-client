@@ -39,7 +39,7 @@ signals:
     void connected();
     void loggedIn();
     void loginFail();
-    void loginError(const QString &reason);
+    void loginError();
     void disconnected();
     void messageReceived(const QString &sender, const QString &text);
     void error(QAbstractSocket::SocketError socketError);
