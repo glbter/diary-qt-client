@@ -54,9 +54,9 @@ MainWidget::MainWidget(Client &controller, QWidget *parent) : QWidget(parent)
     loadFileBtn->setGeometry(paddingX, textLine + 50, 100, 35);
     connect(loadFileBtn, SIGNAL(released()), this, SLOT(saveFile()));
 
-    connect(&controller, SIGNAL(allNotesReceived()), this, SLOT(refreshList()));
+    connect(&controller, &Client::allNotesReceived, this, &MainWidget::refreshList);
     //connect(&controller, SIGNAL(noteGetted()), this, SLOT());
-    connect(&controller, SIGNAL(noteAdded), this, SLOT(addedNote()));
+    connect(&controller, &Client::noteAdded, this, &MainWidget::addedNote);
 
 //    this->setVisible(true);
     controller.GetAllNotes();

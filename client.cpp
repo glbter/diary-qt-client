@@ -153,6 +153,8 @@ void Client::jsonReceived(const QJsonObject &docObj)
         emit loginFail();
 
     } else if (typeVal.toString().compare(GET_ALL_NOTES_ACTION) == 0) {
+        const int userId = docObj.value(QLatin1String("UserId")).toInt();
+        emit allNotesReceived(vector<Note>());
         return;
     } else if (typeVal.toString().compare(ADD_NOTE_ACTION) == 0) {
         const int noteId = docObj.value(QLatin1String("NoteId")).toInt();
