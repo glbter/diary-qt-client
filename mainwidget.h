@@ -8,21 +8,23 @@
 #include <QCalendarWidget>
 #include <QListWidget>
 #include <QPushButton>
-#include "iclient.h"
+#include "client.h"
 
 class MainWidget : public QWidget
 {
     Q_OBJECT
 
 public:
-    MainWidget(IClient& notesController, QWidget *parent = nullptr);
+    MainWidget(Client &notesController, QWidget *parent = nullptr);
     ~MainWidget();
 private slots:
     void handleButton();
-    void refreshList();
+    void refreshList(vector<Note> notes);
     void resfreshNoteTextField();
     void saveFile();
+    void addedNote(int id);
 private:
+    Note lastAddedNote;
     QTextEdit *inputFieldNoteText;
     QLineEdit *inputFieldNoteTitle;
     QLineEdit *titleLb;
@@ -34,7 +36,7 @@ private:
     QPushButton *okButton;
     QPushButton *loadFileBtn;
 
-    IClient *notesController;
+    Client *notesController;
     vector<Note> listNotes;
 };
 

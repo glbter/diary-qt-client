@@ -10,12 +10,11 @@
 #include <QMessageBox>
 #include <QWindow>
 #include <QDialog>
-#include "iclient.h"
 #include "mainwidget.h"
+#include "client.h"
 
 
-
-LoginWindow::LoginWindow(QMainWindow *parent, IClient& controller) : QWidget(parent)
+LoginWindow::LoginWindow(QMainWindow *parent, Client& controller) : QWidget(parent)
 {
     setWindowTitle("Login");
     setGeometry(100, 100, 400, 500);
@@ -43,25 +42,34 @@ LoginWindow::LoginWindow(QMainWindow *parent, IClient& controller) : QWidget(par
     okButton = new QPushButton("Log in", this);
     okButton->setGeometry(paddingX, paddingY+120, 40, 20);
     connect(okButton, SIGNAL(released()), this, SLOT(loginCommand()));
+    connect(&controller, SIGNAL(loggedIn()), this, SLOT(loginSuccess()));
+    connect(&controller, SIGNAL(loginError()), this, SLOT(loginFailed()));
 }
 
 void LoginWindow::loginCommand(){
     std::string login = inputLogin->text().toUtf8().constData();
     std::string password = inputPassword->text().toUtf8().constData();
-    if(controller->CorrectLoginAndPassword(login, password)){
-        MainWidget* widget = new MainWidget(*controller, this);
-        widget->show();
-        parent->setCentralWidget(widget);
-        close();
-    } else {
-        QMessageBox *msgBox = new QMessageBox(this);
-            msgBox->setWindowModality(Qt::NonModal);
-            msgBox->setInformativeText("Наступного разу точно вийде :) ");
-            msgBox->setStandardButtons(QMessageBox::Ok);
-            msgBox->setDefaultButton(QMessageBox::Ok);
-            msgBox->show();
-    }
+    controller->CorrectLoginAndPassword(login, password);
 }
+
+
+void LoginWindow::loginSuccess() {
+    MainWidget* widget = new MainWidget(*controller, this);
+    widget->show();
+    parent->setCentralWidget(widget);
+    close();
+}
+
+
+void LoginWindow::loginFailed(){
+    QMessageBox *msgBox = new QMessageBox(this);
+        msgBox->setWindowModality(Qt::NonModal);
+        msgBox->setInformativeText("Наступного разу точно вийде :) ");
+        msgBox->setStandardButtons(QMessageBox::Ok);
+        msgBox->setDefaultButton(QMessageBox::Ok);
+        msgBox->show();
+}
+
 
 LoginWindow::~LoginWindow(){
     delete inputLoginText;

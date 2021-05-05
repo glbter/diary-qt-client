@@ -12,8 +12,7 @@
 #include <QWidget>
 #include "mainwidget.h"
 
-MainWindow::MainWindow(IClient& controller, QWidget *parent)
-: QMainWindow(parent)
+MainWindow::MainWindow(Client &controller, QWidget *parent) : QMainWindow(parent)
 {
     setWindowTitle("Super-puper schodennyk");
     setGeometry(100, 100, 400, 500);
@@ -26,7 +25,7 @@ MainWindow::MainWindow(IClient& controller, QWidget *parent)
 
 
 
-void MainWindow::openLogin(IClient& controller){
+void MainWindow::openLogin(Client& controller){
     if(controller.isLogined() == false){
         setWindowTitle("pasasi");
     }

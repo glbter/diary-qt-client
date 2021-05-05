@@ -8,7 +8,7 @@
 #include <QCalendarWidget>
 #include <QListWidget>
 #include <QPushButton>
-#include "iclient.h"
+#include "client.h"
 
 
 class MainWindow : public QMainWindow
@@ -16,13 +16,15 @@ class MainWindow : public QMainWindow
     Q_OBJECT
 
 public:
-    MainWindow(IClient& notesController, QWidget *parent = nullptr);
+    MainWindow(Client &myclient, QWidget *parent = nullptr);
     ~MainWindow();
 private slots:
-    void openLogin(IClient& controller);
+    void openLogin(Client &controller);
 private:
 
-    IClient *notesController;
+    Client *notesController;
 
 };
+
+
 #endif // MAINWINDOW_H
