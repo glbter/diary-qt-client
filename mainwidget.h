@@ -24,6 +24,8 @@ private slots:
     void saveFile();
     void addedNote(int id);
 private:
+    void addNote(const string title, const string text);
+
     Note lastAddedNote;
     QTextEdit *inputFieldNoteText;
     QLineEdit *inputFieldNoteTitle;

@@ -69,7 +69,13 @@ void MainWidget::handleButton() {
                 inputFieldNoteText->toPlainText().toUtf8().constData());
     inputFieldNoteTitle->clear();
     inputFieldNoteText->clear();
+    addNote(title, text);
+}
 
+void MainWidget::addNote(const string title, const string text){
+    notesController->AddNote(title, text);
+    lastAddedNote.setText(text);
+    lastAddedNote.setTitle(title);
 }
 
 void MainWidget::refreshList(vector<Note> notesList) {
@@ -119,6 +125,7 @@ void MainWidget::saveFile()
         lastAddedNote.setTitle(header);
         notesController->AddNote(header, text);
         file.close();
+        addNote(header, text);
     }
 }
 
