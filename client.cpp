@@ -5,6 +5,7 @@
 #include <QJsonDocument>
 #include <QJsonObject>
 #include <QJsonValue>
+#include <QJsonArray>
 
 Client::Client(QObject *parent)     : QObject(parent)
   , m_clientSocket(new QTcpSocket(this))
