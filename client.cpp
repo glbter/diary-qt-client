@@ -154,7 +154,31 @@ void Client::jsonReceived(const QJsonObject &docObj)
 
     } else if (typeVal.toString().compare(GET_ALL_NOTES_ACTION) == 0) {
         const int userId = docObj.value(QLatin1String("UserId")).toInt();
-        emit allNotesReceived(vector<Note>());
+
+        QJsonValue notes = docObj.value(QLatin1String("Notes"));
+        vector<Note> newNotes = vector<Note>();
+        if ( notes.isArray() ){
+            QJsonArray array = notes.toArray();
+            for(QJsonValue note: array){
+               string text = note.toObject()
+                       .take(QLatin1String("Text"))
+                       .toString().toStdString();
+
+               string title = note.toObject()
+                       .take(QLatin1String("Title"))
+                       .toString().toStdString();
+
+               int id = note.toObject()
+                       .take(QLatin1String("NoteId"))
+                       .toInt();
+               Note newNote = Note();
+               newNote.setId(id);
+               newNote.setTitle(title);
+               newNote.setText(text);
+               newNotes.push_back(newNote);
+            }
+        }
+        emit allNotesReceived(newNotes);
         return;
     } else if (typeVal.toString().compare(ADD_NOTE_ACTION) == 0) {
         const int noteId = docObj.value(QLatin1String("NoteId")).toInt();
