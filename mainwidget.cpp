@@ -18,7 +18,7 @@ MainWidget::MainWidget(Client &controller, QWidget *parent) : QWidget(parent)
     int paddingY = 10;
     this->notesController = &controller;
     uiNotes = new QListWidget(this);
-    uiNotes->addItem(QString("Here will be shown list of writings"));
+    //uiNotes->addItem(QString("Here will be shown list of writings"));
     uiNotes->setGeometry(paddingX, paddingY, 380, 100);
     uiNotes->setCurrentRow(1);
 
@@ -58,15 +58,15 @@ MainWidget::MainWidget(Client &controller, QWidget *parent) : QWidget(parent)
     //connect(&controller, SIGNAL(noteGetted()), this, SLOT());
     connect(&controller, &Client::noteAdded, this, &MainWidget::addedNote);
 
+
+    lastAddedNote.setId(0);
 //    this->setVisible(true);
     controller.GetAllNotes();
 }
 
 void MainWidget::handleButton() {
     string title = inputFieldNoteTitle->text().toUtf8().constData();
-    notesController->AddNote(
-                inputFieldNoteTitle->text().toUtf8().constData(),
-                inputFieldNoteText->toPlainText().toUtf8().constData());
+    string text = inputFieldNoteText->toPlainText().toUtf8().constData();
     inputFieldNoteTitle->clear();
     inputFieldNoteText->clear();
     addNote(title, text);
@@ -81,12 +81,15 @@ void MainWidget::addNote(const string title, const string text){
 void MainWidget::refreshList(vector<Note> notesList) {
     uiNotes->clear();
     listNotes.clear();
-
+    int id = 0;
     QStringList listItems = QStringList ();
     for(Note note: notesList) {
+        id = id + 1;
+        note.setId(id);
         listNotes.push_back(note);
         listItems << QString::fromStdString(note.getTitle());
     }
+    lastAddedNote.setId(id);
     uiNotes->addItems(listItems);
     uiNotes->setCurrentRow(0);
 }
@@ -120,10 +123,6 @@ void MainWidget::saveFile()
         int stop = header.rfind('.');
         header = header.erase(stop);
         header = header.substr(start, stop);
-
-        lastAddedNote.setText(text);
-        lastAddedNote.setTitle(header);
-        notesController->AddNote(header, text);
         file.close();
         addNote(header, text);
     }
@@ -131,7 +130,7 @@ void MainWidget::saveFile()
 
 
 void MainWidget::addedNote(int id){
-   lastAddedNote.setId(id);
+   lastAddedNote.setId(lastAddedNote.getId() + 1);
    listNotes.push_back(lastAddedNote);
    uiNotes->addItem(QString::fromStdString(lastAddedNote.getTitle()));
 }
