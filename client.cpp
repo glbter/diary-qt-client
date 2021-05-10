@@ -43,8 +43,8 @@ Note &Client::AddNote(const string &title, const string &text)
     message[PASSWORD] = QString::fromStdString(password);
 
     QJsonObject data;
-    message[QStringLiteral("Title")] = QString::fromStdString(title);
-    message[QStringLiteral("Text")] = QString::fromStdString(text);
+    data[QStringLiteral("Title")] = QString::fromStdString(title);
+    data[QStringLiteral("Text")] = QString::fromStdString(text);
     message[DATA] = data;
     // send the JSON using QDataStream
     clientStream << QJsonDocument(message).toJson();
@@ -65,7 +65,7 @@ Note Client::GetNote(const int &id)
     message[PASSWORD] = QString::fromStdString(password);
 
     QJsonObject data;
-    message[QStringLiteral("NoteId")] = QString::number(id);
+    data[QStringLiteral("NoteId")] = QString::number(id);
     message[DATA] = data;
     // send the JSON using QDataStream
     clientStream << QJsonDocument(message).toJson();
@@ -153,6 +153,8 @@ void Client::jsonReceived(const QJsonObject &docObj)
         emit loginFail();
 
     } else if (typeVal.toString().compare(GET_ALL_NOTES_ACTION) == 0) {
+        const int userId = docObj.value(QLatin1String("UserId")).toInt();
+        emit allNotesReceived(vector<Note>());
         return;
     } else if (typeVal.toString().compare(ADD_NOTE_ACTION) == 0) {
         const int noteId = docObj.value(QLatin1String("NoteId")).toInt();
